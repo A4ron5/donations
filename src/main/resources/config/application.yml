@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: safin
+    password: safin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+application:
+  domain:
+    payouts:
+      max-count-of-methods: 3
+    donation-settings:
+      messages:
+        max: 200
+        min: 100
+      spam-filters:
+        - 'ruletka'
+        - 'casino'
+
