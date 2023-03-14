@@ -11,13 +11,17 @@ spring:
 
 application:
   domain:
-    payouts:
-      max-count-of-methods: 3
+    user-settings:
+      currency: "RUB"
+      percentFee: 5
+      timezone: "Asia/Yekaternburg"
+      language: "ru"
+    payouts-settings:
+      balance: 0
     donation-settings:
-      messages:
-        max: 200
-        min: 100
-      spam-filters:
-        - 'ruletka'
-        - 'casino'
+      is-message-moderate: false
+      is-remove-links: false
+      max-count-of-symbols: 200
+      min-sum: 20
+      max-sum: 1000
 

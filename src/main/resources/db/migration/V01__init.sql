@@ -18,21 +18,21 @@ CREATE TABLE user_settings (
 
 CREATE TABLE donate_settings (
     id SERIAL PRIMARY KEY,
-    user_settings_id INT NOT NULL,
+    user_id INT NOT NULL,
     min_sum DECIMAL(10,2) NOT NULL,
     max_sum DECIMAL(10,2) NOT NULL,
     max_count_of_symbols INT NOT NULL,
     is_remove_links BOOLEAN NOT NULL,
     is_message_moderate BOOLEAN NOT NULL,
     black_list TEXT,
-    CONSTRAINT fk_donate_settings_user_settings_id FOREIGN KEY (user_settings_id) REFERENCES user_settings (id)
+    CONSTRAINT fk_donate_settings_user_id FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
 CREATE TABLE payout_settings (
     id SERIAL PRIMARY KEY,
-    user_settings_id INT NOT NULL,
+    user_id INT NOT NULL,
     balance DECIMAL(10,2) NOT NULL,
-    CONSTRAINT fk_payout_user_settings_id FOREIGN KEY (user_settings_id) REFERENCES user_settings (id)
+    CONSTRAINT fk_payout_settings_user_id FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
 CREATE TABLE payout_methods (

@@ -1,23 +1,27 @@
 package ru.safin.donation.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "user_settings")
-public class UserSettings {
+public class UserSettings extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     @NotNull
+    @JsonIgnore
     private User user;
 
     @Column(precision = 5, scale = 2)
@@ -38,10 +42,4 @@ public class UserSettings {
 
     @NotNull
     private String secretToken;
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "userSettings")
-    private DonateSettings donateSettings;
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "userSettings")
-    private PayoutSettings payoutSettings;
 }
