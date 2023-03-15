@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,6 +30,6 @@ public class PayoutSettings  extends AbstractEntity {
     @NotNull
     private BigDecimal balance;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "payoutSettings")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "payoutSettings")
     private List<PayoutMethod> payoutMethod;
 }

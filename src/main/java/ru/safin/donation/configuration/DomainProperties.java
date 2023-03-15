@@ -15,6 +15,8 @@ public class DomainProperties {
     private DonationSettings donationSettings;
     private UserSettings userSettings;
     private List<String> availableCurrencies;
+    private Integer maxCountOfPayoutsMethods;
+    private BigDecimal cardFee;
 
     @Data
     public static class PayoutSettings {

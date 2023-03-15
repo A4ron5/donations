@@ -14,9 +14,9 @@ import ru.safin.donation.validator.SettingsValidator;
 @RequestMapping("/api/v1/user-settings")
 @RequiredArgsConstructor
 public class UserSettingsController {
-    public final UserSettingsService userSettingsService;
-    public final SettingsConverter settingsConverter;
-    public final SettingsValidator settingsValidator;
+    private final UserSettingsService userSettingsService;
+    private final SettingsConverter settingsConverter;
+    private final SettingsValidator settingsValidator;
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserSettingsDto> getUserSettings(@PathVariable @NotBlank Long userId) {

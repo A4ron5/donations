@@ -2,23 +2,35 @@ package ru.safin.donation.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.safin.donation.configuration.DomainProperties;
+import ru.safin.donation.entity.PayoutMethod;
 import ru.safin.donation.entity.PayoutSettings;
+import ru.safin.donation.exception.BusinessException;
+import ru.safin.donation.repository.PayoutMethodRepository;
 import ru.safin.donation.repository.PayoutSettingsRepository;
 import ru.safin.donation.service.AbstractService;
 import ru.safin.donation.service.PayoutSettingsService;
 import ru.safin.donation.service.UserService;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class PayoutSettingsServiceImpl extends AbstractService<PayoutSettings, PayoutSettingsRepository> implements PayoutSettingsService {
     private final UserService userService;
+    private final DomainProperties domainProperties;
+    private final PayoutMethodRepository payoutMethodRepository;
 
     public PayoutSettingsServiceImpl(
         PayoutSettingsRepository payoutSettingsRepository,
-        UserService userService
+        UserService userService,
+        DomainProperties domainProperties,
+        PayoutMethodRepository payoutMethodRepository
     ) {
         super(payoutSettingsRepository);
         this.userService = userService;
+        this.domainProperties = domainProperties;
+        this.payoutMethodRepository = payoutMethodRepository;
     }
 
     @Override
@@ -38,5 +50,24 @@ public class PayoutSettingsServiceImpl extends AbstractService<PayoutSettings, P
         requestEntity.setUser(user);
 
         return update(requestEntity);
+    }
+
+    @Override
+    public List<PayoutMethod> insertPayoutMethodToSettings(
+            PayoutMethod payoutMethod,
+            Long payoutSettingsId,
+            Long userId
+    ) {
+        var storedPayoutSettings = get(payoutSettingsId);
+
+        payoutMethod.setFee(domainProperties.getCardFee());
+        payoutMethod.setPayoutSettings(storedPayoutSettings);
+        payoutMethodRepository.save(payoutMethod);
+
+        List<PayoutMethod> updatedPayoutMethod = storedPayoutSettings.getPayoutMethod();
+        updatedPayoutMethod.add(payoutMethod);
+        storedPayoutSettings.setPayoutMethod(updatedPayoutMethod);
+
+        return update(storedPayoutSettings).getPayoutMethod();
     }
 }

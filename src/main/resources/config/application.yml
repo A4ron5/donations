@@ -9,6 +9,10 @@ spring:
       ddl-auto: validate
     show-sql: true
 
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
+
 application:
   domain:
     user-settings:
@@ -29,4 +33,6 @@ application:
       - 'USD'
       - 'CNY'
       - 'JPY'
+    maxCountOfPayoutsMethods: 3
+    cardFee: 5
 

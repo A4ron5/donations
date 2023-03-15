@@ -14,10 +14,10 @@ import ru.safin.donation.validator.SettingsValidator;
 @RequestMapping("/api/v1/donate-settings")
 @RequiredArgsConstructor
 public class DonateSettingsController {
-    public final DonateSettingsService donateSettingsService;
-    public final SettingsConverter settingsConverter;
+    private final DonateSettingsService donateSettingsService;
+    private final SettingsConverter settingsConverter;
 
-    public final SettingsValidator settingsValidator;
+    private final SettingsValidator settingsValidator;
 
     @GetMapping("/{userId}")
     public ResponseEntity<DonateSettingsDto> getDonateSettings(@PathVariable @NotBlank Long userId) {
