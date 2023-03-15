@@ -14,13 +14,26 @@ import ru.safin.donation.entity.PayoutSettings;
 import ru.safin.donation.entity.UserSettings;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface SettingsConverter {
     DonateSettingsDto toDtoDonateSettings(DonateSettings donateSettings);
     DonateSettings toEntityDonateSettings(DonateSettingsDto donateSettingsDto);
 
-    PayoutSettingsDto toDtoPayoutSettings(PayoutSettings payoutSettings);
+    PayoutSettingsDto innnerToDtoPayoutSettings(PayoutSettings payoutSettings);
+
+    default PayoutSettingsDto toDtoPayoutSettings(PayoutSettings payoutSettings) {
+        List<PayoutMethod> sourcePayoutMethods = payoutSettings.getPayoutMethod();
+        List<PayoutMethodDto> targetPayoutMethods = sourcePayoutMethods.stream().map(this::toDtoPayoutMethod).toList();
+
+
+        var target = innnerToDtoPayoutSettings(payoutSettings);
+        target.setPayoutMethods(targetPayoutMethods);;
+
+        return target;
+    }
+
     PayoutSettings toEntityPayoutSettings(PayoutSettingsDto payoutSettingsDto);
 
     UserSettingsDto toDtoUserSettings(UserSettings userSettings);
@@ -29,5 +42,7 @@ public interface SettingsConverter {
 
     PayoutMethod toEntityPayoutMethod(PayoutMethodDto payoutMethodDto);
 
-    List<PayoutMethodDto> toDtoPayoutMethod(List<PayoutMethod> payoutMethod);
+    List<PayoutMethodDto> toDtoPayoutMethodList(List<PayoutMethod> payoutMethodList);
+
+    PayoutMethodDto toDtoPayoutMethod(PayoutMethod payoutMethod);
 }

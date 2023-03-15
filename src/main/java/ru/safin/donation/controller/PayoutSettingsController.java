@@ -59,7 +59,7 @@ public class PayoutSettingsController {
         );
 
 
-        return ResponseEntity.ok(settingsConverter.toDtoPayoutMethod(storedEntity));
+        return ResponseEntity.ok(settingsConverter.toDtoPayoutMethodList(storedEntity));
 
     }
 }
