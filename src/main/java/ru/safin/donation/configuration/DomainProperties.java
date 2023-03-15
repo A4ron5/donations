@@ -13,7 +13,8 @@ import java.util.List;
 public class DomainProperties {
     private PayoutSettings payoutsSettings;
     private DonationSettings donationSettings;
-    private UserSettings UserSettings;
+    private UserSettings userSettings;
+    private List<String> availableCurrencies;
 
     @Data
     public static class PayoutSettings {

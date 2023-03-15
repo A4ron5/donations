@@ -1,31 +1,42 @@
 package ru.safin.donation.controller;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.safin.donation.converter.SettingsConverter;
 import ru.safin.donation.dto.UserSettingsDto;
-import ru.safin.donation.entity.UserSettings;
-import ru.safin.donation.service.impl.UserSettingsServiceImpl;
+import ru.safin.donation.service.UserSettingsService;
+import ru.safin.donation.validator.SettingsValidator;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user-settings")
 @RequiredArgsConstructor
 public class UserSettingsController {
+    public final UserSettingsService userSettingsService;
+    public final SettingsConverter settingsConverter;
+    public final SettingsValidator settingsValidator;
 
-    private final UserSettingsServiceImpl userSettingsService;
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserSettingsDto> getUserSettings(@PathVariable @NotBlank Long userId) {
+        var userSettings = userSettingsService.findUserSettingsByUserId(userId);
 
-    @GetMapping("/user-settings/{userId}")
-    public ResponseEntity<UserSettings> getUserSettings(@PathVariable @NotBlank Long userId) {
-        var userSettings = userSettingsService.getUserSettingsByUserId(userId);
-
-        return ResponseEntity.ok(userSettings);
+        return ResponseEntity.ok(settingsConverter.toDtoUserSettings(userSettings));
 
     }
 
-    @PutMapping("/user-settings/{userId}")
-    public ResponseEntity<UserSettingsDto> updateUserSettings(@PathVariable @NotBlank Long userId) {
-        return ResponseEntity.ok(null);
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserSettingsDto> updateUserSettings(
+            @PathVariable @NotBlank Long userId,
+            @RequestBody @Valid UserSettingsDto request
+    ) {
+        settingsValidator.validateUserSettingsCurrencies(request);
+
+        var requestEntity = settingsConverter.toEntityUserSettings(request);
+        var storedEntity = userSettingsService.findUserAndUpdateSettings(userId, requestEntity);
+
+        return ResponseEntity.ok(settingsConverter.toDtoUserSettings(storedEntity));
 
     }
 

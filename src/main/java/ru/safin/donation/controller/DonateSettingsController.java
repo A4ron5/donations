@@ -1,28 +1,41 @@
 package ru.safin.donation.controller;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.safin.donation.converter.SettingsConverter;
 import ru.safin.donation.dto.DonateSettingsDto;
-import ru.safin.donation.entity.DonateSettings;
-import ru.safin.donation.service.impl.DonateSettingsServiceImpl;
+import ru.safin.donation.service.DonateSettingsService;
+import ru.safin.donation.validator.SettingsValidator;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/donate-settings")
 @RequiredArgsConstructor
 public class DonateSettingsController {
-    public final DonateSettingsServiceImpl donateSettingsService;
+    public final DonateSettingsService donateSettingsService;
+    public final SettingsConverter settingsConverter;
 
-    @GetMapping("/donate-settings/{userId}")
-    public ResponseEntity<DonateSettings> getDonateSettings(@PathVariable @NotBlank Long userId) {
+    public final SettingsValidator settingsValidator;
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<DonateSettingsDto> getDonateSettings(@PathVariable @NotBlank Long userId) {
         var donateSettings = donateSettingsService.findDonateSettingsByUserId(userId);
 
-        return ResponseEntity.ok(donateSettings);
+        return ResponseEntity.ok(settingsConverter.toDtoDonateSettings(donateSettings));
     }
 
-    @PutMapping("/donate-settings/{userId}")
-    public ResponseEntity<DonateSettingsDto> updateDonateSettings(@PathVariable @NotBlank Long userId) {
-        return ResponseEntity.ok(null);
+    @PutMapping("/{userId}")
+    public ResponseEntity<DonateSettingsDto> updateDonateSettings(
+            @PathVariable @NotBlank Long userId,
+            @RequestBody @Valid DonateSettingsDto request
+    ) {
+        settingsValidator.validateDonationSettingsSum(request);
+
+        var requestEntity = settingsConverter.toEntityDonateSettings(request);
+        var storedEntity = donateSettingsService.findUserAndUpdateSettings(userId, requestEntity);
+
+        return ResponseEntity.ok(settingsConverter.toDtoDonateSettings(storedEntity));
     }
 }

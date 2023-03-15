@@ -1,5 +1,9 @@
 package ru.safin.donation.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -12,6 +16,9 @@ import java.util.List;
 @Builder
 @ToString
 public class PayoutSettingsDto {
+    @NotNull
+    private Long id;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private BigDecimal balance;
     private List<PayoutMethod> payoutMethods;
 }

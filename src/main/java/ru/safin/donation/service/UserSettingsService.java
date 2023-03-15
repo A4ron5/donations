@@ -1,9 +1,9 @@
 package ru.safin.donation.service;
 
 import ru.safin.donation.entity.UserSettings;
-import ru.safin.donation.repository.UserSettingsRepository;
 
 public interface UserSettingsService extends CommonCrudService<UserSettings>{
+    UserSettings findUserSettingsByUserId(Long userId);
 
-    public UserSettings getUserSettingsByUserId(Long userId);
+    UserSettings findUserAndUpdateSettings(Long userId, UserSettings requestEntity);
 }

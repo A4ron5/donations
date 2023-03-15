@@ -8,7 +8,7 @@ import ru.safin.donation.entity.DonateSettings;
 import ru.safin.donation.entity.PayoutSettings;
 import ru.safin.donation.entity.UserSettings;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface SettingsConverter {
     DonateSettingsDto toDtoDonateSettings(DonateSettings donateSettings);
     DonateSettings toEntityDonateSettings(DonateSettingsDto donateSettingsDto);

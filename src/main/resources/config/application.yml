@@ -24,4 +24,9 @@ application:
       max-count-of-symbols: 200
       min-sum: 20
       max-sum: 1000
+    available-currencies:
+      - 'RUB'
+      - 'USD'
+      - 'CNY'
+      - 'JPY'
 
