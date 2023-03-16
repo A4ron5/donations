@@ -1,9 +1,6 @@
 package ru.safin.donation.converter;
 
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import ru.safin.donation.dto.DonateSettingsDto;
 import ru.safin.donation.dto.PayoutMethodDto;
 import ru.safin.donation.dto.PayoutSettingsDto;
@@ -14,7 +11,6 @@ import ru.safin.donation.entity.PayoutSettings;
 import ru.safin.donation.entity.UserSettings;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface SettingsConverter {
@@ -29,7 +25,7 @@ public interface SettingsConverter {
 
 
         var target = innnerToDtoPayoutSettings(payoutSettings);
-        target.setPayoutMethods(targetPayoutMethods);;
+        target.setPayoutMethods(targetPayoutMethods);
 
         return target;
     }

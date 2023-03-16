@@ -1,0 +1,1 @@
+ALTER TABLE donates ADD COLUMN hash VARCHAR(255);

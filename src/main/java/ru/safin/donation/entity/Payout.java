@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import ru.safin.donation.dto.enums.PayoutStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,6 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "payouts")
+@EntityListeners(AuditingEntityListener.class)
 public class Payout  extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -30,6 +34,7 @@ public class Payout  extends AbstractEntity {
 
     @Column(name = "payout_date", columnDefinition = "TIMESTAMP")
     @NotNull
+    @CreatedDate
     private LocalDateTime payoutDate;
 
     @Column(precision = 10, scale = 2)
@@ -37,6 +42,6 @@ public class Payout  extends AbstractEntity {
     private BigDecimal fee;
 
     @NotNull
-    @Size(min = 2, max = 30)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private PayoutStatus status;
 }

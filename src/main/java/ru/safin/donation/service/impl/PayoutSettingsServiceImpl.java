@@ -2,7 +2,10 @@ package ru.safin.donation.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.safin.donation.configuration.DomainProperties;
+import ru.safin.donation.entity.Donate;
 import ru.safin.donation.entity.PayoutMethod;
 import ru.safin.donation.entity.PayoutSettings;
 import ru.safin.donation.exception.BusinessException;
@@ -12,6 +15,7 @@ import ru.safin.donation.service.AbstractService;
 import ru.safin.donation.service.PayoutSettingsService;
 import ru.safin.donation.service.UserService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -70,4 +74,18 @@ public class PayoutSettingsServiceImpl extends AbstractService<PayoutSettings, P
 
         return update(storedPayoutSettings).getPayoutMethod();
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateUserBalance(Donate donate) {
+        var storedPayoutSettings = findPayoutSettingsByUserId(donate.getUser().getId());
+
+        BigDecimal amount = donate.getSum();
+        BigDecimal storedAmount = storedPayoutSettings.getBalance();
+
+        storedPayoutSettings.setBalance(storedAmount.add(amount));
+
+        update(storedPayoutSettings);
+    }
+
 }

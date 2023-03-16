@@ -11,7 +11,8 @@ spring:
 
 logging:
   level:
-    org.hibernate.orm.jdbc.bind: trace
+    org.springframework.orm.jpa: DEBUG
+    org.springframework.transaction: DEBUG
 
 application:
   domain:

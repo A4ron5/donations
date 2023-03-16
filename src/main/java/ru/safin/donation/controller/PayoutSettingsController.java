@@ -30,6 +30,7 @@ public class PayoutSettingsController {
 
     }
 
+    // REMOVE ?
     @PutMapping("/{userId}")
     public ResponseEntity<PayoutSettingsDto> updatePayoutSettings(
             @PathVariable @NotBlank Long userId,

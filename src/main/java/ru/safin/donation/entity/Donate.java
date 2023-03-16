@@ -1,9 +1,13 @@
 package ru.safin.donation.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import ru.safin.donation.dto.enums.DonateStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,11 +16,13 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "donates")
+@EntityListeners(AuditingEntityListener.class)
 public class Donate extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @NotNull
+    @JsonIgnore
     private User user;
 
     @Column(precision = 10, scale = 2)
@@ -25,6 +31,7 @@ public class Donate extends AbstractEntity {
 
     @Column(name = "donate_date", columnDefinition = "TIMESTAMP")
     @NotNull
+    @CreatedDate
     private LocalDateTime donateDate;
 
     @Column(columnDefinition = "TEXT")
@@ -38,5 +45,9 @@ public class Donate extends AbstractEntity {
     private Boolean fee_coverage;
 
     @NotNull
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private DonateStatus status;
+
+    @NotNull
+    private String hash;
 }
