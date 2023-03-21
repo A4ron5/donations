@@ -1,0 +1,12 @@
+https://github.com/login/oauth/authorize?
+    response_type=code&
+    client_id=ca701e5272360acb5906&
+    scope=read:user&
+    redirect_uri=http://localhost:8080/login/oauth2/code/github
+
+
+https://id.twitch.tv/oauth2/authorize
+    ?response_type=code
+    &client_id=ha0j1253uve8y4armjs3yp4a5u0eik
+    &redirect_uri=http://localhost:8080/login/oauth2/code/twitch
+    &scope=user:read:email

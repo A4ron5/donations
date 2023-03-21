@@ -8,12 +8,18 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
-
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-secret: 6a3e6d533b28d48fbe3c7569305e8abc1a7695d0
+            client-id: ca701e5272360acb5906
 logging:
   level:
     org.springframework.orm.jpa: DEBUG
     org.springframework.transaction: DEBUG
-
+    org.springframework.security: DEBUG
 application:
   domain:
     user-settings:

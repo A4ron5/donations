@@ -11,6 +11,7 @@ import ru.safin.donation.repository.DonateSettingsRepository;
 import ru.safin.donation.repository.PayoutSettingsRepository;
 import ru.safin.donation.repository.UserRepository;
 import ru.safin.donation.repository.UserSettingsRepository;
+//import ru.safin.donation.security.CustomUser;
 import ru.safin.donation.service.AbstractService;
 import ru.safin.donation.service.UserService;
 import ru.safin.donation.utils.TokenGenerator;
@@ -40,17 +41,27 @@ public class UserServiceImpl extends AbstractService<User, UserRepository> imple
     }
 
     @Override
-    public void createDefaultUserEnvironment(Long userId) {
-        log.info("Creating default environment for user with id={}", userId);
-        var user = get(userId);
+    public void createDefaultUserEnvironment(User user) {
+        var donationUser = new User();
+        donationUser.setEmail(user.getEmail());
+//        donationUser.setNickname(user.getName());
 
-        var userSettings = createDefaultUserSettings(user);
-        var donateSettings = createDefaultDonateSettings(user);
-        var payoutSettings = createDefaultPayoutSettings(user);
+        var storedUser = create(donationUser);
+        log.info("Creating default environment for user with id={}", storedUser.getId());
+
+
+        var userSettings = createDefaultUserSettings(storedUser);
+        var donateSettings = createDefaultDonateSettings(storedUser);
+        var payoutSettings = createDefaultPayoutSettings(storedUser);
 
         userSettingsRepository.save(userSettings);
         donateSettingsRepository.save(donateSettings);
         payoutSettingsRepository.save(payoutSettings);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return repository.findByEmail(email);
     }
 
     private UserSettings createDefaultUserSettings(User user) {
