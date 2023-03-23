@@ -7,7 +7,7 @@ import ru.safin.donation.repository.UserRepository;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    UserService userService;
+    private final UserService userService;
 
     public boolean checkIfUserAlreadyHasSettings(String userEmail) {
         var user = userService.findByEmail(userEmail);

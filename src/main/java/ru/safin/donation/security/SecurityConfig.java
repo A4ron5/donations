@@ -17,10 +17,9 @@ public class SecurityConfig  {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .csrf()
+                .and()
+                .cors()
                 .disable()
-                .authorizeHttpRequests()
-                .anyRequest()
-                .authenticated().and()
                 .oauth2Login()
                 .defaultSuccessUrl("/auth/success").failureUrl("/auth/failure");
 

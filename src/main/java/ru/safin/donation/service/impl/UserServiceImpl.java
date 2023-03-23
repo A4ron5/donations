@@ -41,12 +41,8 @@ public class UserServiceImpl extends AbstractService<User, UserRepository> imple
     }
 
     @Override
-    public void createDefaultUserEnvironment(User user) {
-        var donationUser = new User();
-        donationUser.setEmail(user.getEmail());
-//        donationUser.setNickname(user.getName());
-
-        var storedUser = create(donationUser);
+    public Long createDefaultUserEnvironment(User user) {
+        var storedUser = create(user);
         log.info("Creating default environment for user with id={}", storedUser.getId());
 
 
@@ -57,6 +53,8 @@ public class UserServiceImpl extends AbstractService<User, UserRepository> imple
         userSettingsRepository.save(userSettings);
         donateSettingsRepository.save(donateSettings);
         payoutSettingsRepository.save(payoutSettings);
+
+        return storedUser.getId();
     }
 
     @Override

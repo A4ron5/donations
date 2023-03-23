@@ -6,7 +6,7 @@ import ru.safin.donation.entity.UserSettings;
 //import ru.safin.donation.security.CustomUser;
 
 public interface UserService extends CommonCrudService<User>{
-    void createDefaultUserEnvironment(User user);
+    Long createDefaultUserEnvironment(User user);
 
     User findByEmail(String email);
 }
