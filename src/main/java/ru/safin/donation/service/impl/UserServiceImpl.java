@@ -62,6 +62,11 @@ public class UserServiceImpl extends AbstractService<User, UserRepository> imple
         return repository.findByEmail(email);
     }
 
+    @Override
+    public User findByUsername(String username) {
+        return repository.findByNickname(username);
+    }
+
     private UserSettings createDefaultUserSettings(User user) {
         log.info("Creating default user settings for user={}", user);
 

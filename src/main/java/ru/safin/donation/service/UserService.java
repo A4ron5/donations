@@ -9,4 +9,6 @@ public interface UserService extends CommonCrudService<User>{
     Long createDefaultUserEnvironment(User user);
 
     User findByEmail(String email);
+
+    User findByUsername(String username);
 }

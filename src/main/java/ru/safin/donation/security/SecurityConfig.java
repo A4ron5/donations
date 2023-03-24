@@ -17,7 +17,7 @@ public class SecurityConfig  {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .csrf()
-                .and()
+                .disable()
                 .cors()
                 .disable()
                 .oauth2Login()

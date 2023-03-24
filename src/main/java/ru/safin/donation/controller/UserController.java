@@ -1,6 +1,7 @@
 package ru.safin.donation.controller;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -26,5 +27,11 @@ public class UserController {
             @PathVariable @NotBlank Long id
     ) {
         return ResponseEntity.ok(userService.get(id));
+    }
+    @GetMapping("/username/{username}")
+    public ResponseEntity<User> getUserByUsername(
+            @PathVariable @NotBlank String username
+    ) {
+        return ResponseEntity.ok(userService.findByUsername(username));
     }
 }

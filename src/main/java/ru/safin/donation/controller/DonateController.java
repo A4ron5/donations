@@ -47,6 +47,8 @@ public class DonateController {
         return ResponseEntity.ok(donateStatus);
     }
 
+
+    //SYNC
     @PostMapping("/callback/{donateId}/deposit/{hash}")
     public void callbackDonateDeposit(
             @PathVariable @NotBlank String hash,
